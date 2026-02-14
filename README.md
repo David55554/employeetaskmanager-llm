@@ -1,45 +1,60 @@
-Docker Deployment
+LLM Integration
 
-We put this application in a Docker container so it can run on any computer.
+We integrated Google Gemini AI to provide intelligent analysis for employees.
 
-Getting the Image
+Smart Features
 
-You can download our image from Docker Hub. Just run this command:
+The AI can analyze employee data and provide:
+- Tax bracket estimates and take-home pay calculations
+- Cost of living analysis for different locations
+- Salary comparisons with market rates
+- Career development recommendations
+- Productivity tips for tasks
 
-docker pull david11577/employeetaskmanager-rest:1.0
+API Endpoints
 
+Send custom prompt:
+```
+POST /api/llm/generate
+Body: {"prompt": "your prompt here"}
+```
 
-Running the Application
+Analyze employee profile:
+```
+GET /api/llm/employee-analysis/{id}
+```
 
-To start the application in Docker, use this command:
+Get tax information:
+```
+GET /api/llm/tax-info/{id}
+```
 
-docker run -d -p 8080:8080 --name employee-api david11577/employeetaskmanager-rest:1.0
+Get location benefits:
+```
+GET /api/llm/location-benefits/{id}?location=New York City
+```
 
+Compare salary to market:
+```
+GET /api/llm/salary-comparison/{id}
+```
 
-After it starts, open your web browser and go to http://localhost:8080/swagger-ui.html to use the API.
+Get productivity tips:
+```
+GET /api/llm/task-tips/{id}
+```
 
-Building Your Own Image
+Setup
 
-If you want to build the image yourself instead of downloading it, follow these steps.
+You need a Google Gemini API key. Get one free at https://makersuite.google.com/app/apikey
 
-First, build the JAR file:
+Add your API key to application.properties:
+```
+gemini.api.key=your-key-here
+```
 
-./mvnw clean package -DskipTests
+How to Use
 
+First create an employee using the regular employee endpoints. Then use the LLM endpoints with that employee's ID to get AI-powered insights about their taxes, location benefits, or career development.
 
-Next, build the Docker image:
-
-docker build -t employeetaskmanager-rest:1.0 .
-
-
-Then run it:
-
-docker run -d -p 8080:8080 --name employee-api employeetaskmanager-rest:1.0
-
-
-Stopping the Container
-
-When you want to stop the application, run these commands:
-
-docker stop employee-api
-docker rm employee-api
+Test all endpoints at http://localhost:8080/swagger-ui.html
